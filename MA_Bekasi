@@ -1,0 +1,124 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var L8 = ee.ImageCollection("LANDSAT/LC08/C02/T1_TOA"),
+    Area = 
+    /* color: #00ffff */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[106.94822474341052, -5.901165680364032],
+          [106.94822474341052, -6.100567386148363],
+          [107.12125941137927, -6.100567386148363],
+          [107.12125941137927, -5.901165680364032]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+//2022
+
+var image2022 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2022-01-01','2022-12-31').median().clip(Area)
+
+var CMRI2022 = image2022.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2022, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2022');
+
+
+//2021
+
+var image2021 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2021-01-01','2021-12-31').median().clip(Area)
+
+var CMRI2021 = image2021.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2021, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2021');
+
+
+//2020
+
+var image2020 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2020-01-01','2020-12-31').median().clip(Area)
+
+var CMRI2020 = image2020.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2020, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2020');
+
+
+//2019
+
+var image2019 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2019-01-01','2019-12-31').median().clip(Area)
+
+var CMRI2019 = image2019.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2019, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2019');
+
+
+//2018
+
+var image2018 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2018-01-01','2018-12-31').median().clip(Area)
+
+var CMRI2018 = image2018.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2018, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2018');
+
+
+//2017
+
+var image2017 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2017-01-01','2017-12-31').median().clip(Area)
+
+var CMRI2017 = image2017.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2017, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2017');
+
+
+//2016
+
+var image2016 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2016-01-01','2016-12-31').median().clip(Area)
+
+var CMRI2016 = image2016.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2016, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2016');
+
+
+//2015
+
+var image2015 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2015-01-01','2015-12-31').median().clip(Area)
+
+var CMRI2015 = image2015.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2015, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2015');
+
+
+//2014
+
+var image2014 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2014-01-01','2014-12-31').median().clip(Area)
+
+var CMRI2014 = image2014.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2014, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2014');
+
+
+//2013
+
+var image2013 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2013-02-11','2013-12-31').median().clip(Area)
+
+var CMRI2013 = image2013.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2013, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2013');

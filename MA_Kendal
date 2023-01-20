@@ -1,0 +1,44 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var L8 = ee.ImageCollection("LANDSAT/LC08/C02/T1_TOA"),
+    Area = 
+    /* color: #ffc82d */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[110.04703960110011, -6.8126566264879544],
+          [110.04703960110011, -7.006247617049737],
+          [110.34504375149073, -7.006247617049737],
+          [110.34504375149073, -6.8126566264879544]]], null, false),
+    imageVisParam = {"opacity":1,"bands":["B5"],"min":-1,"palette":["403dff","fff14d","ff4710","1c8031"]};
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+var image2022 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',10)
+.filterDate('2022-01-01','2022-12-31').median()
+
+//var RED = image.select('B4')
+//var NIR = image.select('B5')
+
+//var NDVI = NIR.subtract(RED).divide(NIR.add(RED))
+
+/*var NDVI = image.expression(
+  '(NIR-RED)/(NIR+RED)',
+  {
+    'NIR':NIR,
+    'RED':RED
+  })
+*/
+
+
+//var NDVI = image.expression('(b(4)-b(3))/(b(4)+b(3))')
+//var NDWI = image.expression('(b(2)-b(4))/(b(2)+b(4))')
+
+//var CMRI = NDVI - NDWI
+
+var CMRI2022 = image2022.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+//Map.addLayer(CMRI2022)
+Map.addLayer(CMRI2022, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2022');

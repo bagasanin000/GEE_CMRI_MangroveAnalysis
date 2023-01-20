@@ -1,0 +1,32 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var L8 = ee.ImageCollection("LANDSAT/LC08/C02/T1_TOA"),
+    Area = 
+    /* color: #d63000 */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[106.96489278133492, -5.9095608798964365],
+          [106.96489278133492, -6.102814761178459],
+          [107.12488118465524, -6.102814761178459],
+          [107.12488118465524, -5.9095608798964365]]], null, false);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+//CMRI 2022
+
+var image2022 = 
+// define area
+L8.filterBounds(Area)
+// filtering dataset with cloud cover < 15
+.filterMetadata('CLOUD_COVER','less_than',15)
+// filter date 
+.filterDate('2022-01-01','2022-12-31').median()
+// clip
+.clip(Area)
+
+// CMRI Formula (NDVI-NDWI)
+var CMRI2022 = image2022.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+// Adding Layer and Define Classification
+Map.addLayer(CMRI2022, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2022');

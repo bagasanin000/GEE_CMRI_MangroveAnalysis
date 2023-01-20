@@ -1,0 +1,136 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var L8 = ee.ImageCollection("LANDSAT/LC08/C02/T1_TOA"),
+    Area = 
+    /* color: #00ffff */
+    /* shown: false */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[106.94822474341052, -5.901165680364032],
+          [106.94822474341052, -6.100567386148363],
+          [107.12125941137927, -6.100567386148363],
+          [107.12125941137927, -5.901165680364032]]], null, false),
+    polygon = ee.FeatureCollection("projects/bagasanin00/assets/AdminDesa_KabBekasi");
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+
+//2022
+
+var image2022 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2022-01-01','2022-12-31').median().clip(Area)
+
+var CMRI2022 = image2022.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2022, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2022');
+
+
+//2018
+
+var image2018 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2018-01-01','2018-12-31').median().clip(Area)
+
+var CMRI2018 = image2018.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2018, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2018');
+
+
+
+//2013
+
+var image2013 = L8.filterBounds(Area)
+.filterMetadata('CLOUD_COVER','less_than',15)
+.filterDate('2013-02-11','2013-12-31').median().clip(Area)
+
+var CMRI2013 = image2013.expression('((b(4)-b(3))/(b(4)+b(3)))-((b(2)-b(4))/(b(2)+b(4)))')
+
+Map.addLayer(CMRI2013, {min:-1, max:1, palette:['blue', 'yellow', 'green', 'red']}, 'CMRI 2013');
+
+//Admin Desa Polygon
+
+var admin_desa = ee.FeatureCollection(polygon)
+
+var styling = {
+  color: 'black',
+  width: 0.7,
+  lineType: 'dotted',
+  fillColor: '#ffffff00'}
+
+Map.addLayer(admin_desa.style(styling), {}, 'Admin Desa');
+
+
+//Label
+
+var text = require('users/gena/packages:text')
+
+var scale = Map.getScale() + 1
+
+var labels = admin_desa.map(function(feat){
+  feat = ee.Feature(feat)
+  var name = ee.String(feat.get("DESA"))
+  var centroid = feat.geometry().centroid()
+  var t = text.draw(name, centroid, scale, {
+    fontSize: 14,
+    textColor: 'white',
+    outlineWidth: 1,
+    outlineColor: 'black'
+  })
+  return t
+})
+
+var labels_final = ee.ImageCollection(labels)
+
+Map.addLayer(labels_final, {}, 'Label')
+
+
+// Adding Legend
+
+var panel = ui.Panel({
+  style: {
+    position: 'bottom-left',
+    padding: '5px;'
+  }
+})
+
+var title = ui.Label({
+  value: 'Classification',
+  style: {
+    fontSize: '15px',
+    fontWeight: 'bold',
+    margin: '1px;'
+  }
+})
+
+panel.add(title)
+
+var color =['blue', 'yellow', 'green', 'red']
+var classification = ['Water','Land','Non-Mangrove Vegetation','Mangrove']
+
+var list_legend = function(color, desc) {
+  var c = ui.Label({
+    style: {
+      backgroundColor: color,
+      padding: '10px',
+      margin: '4px'
+    }
+  })
+  var ds = ui.Label({
+    value: desc,
+    style: {
+      margin: '5px'
+    }
+  })
+  return ui.Panel({
+    widgets: [c, ds],
+    layout: ui.Panel.Layout.Flow('horizontal')
+  })
+}
+
+for (var i = 0; i < 4; i++) {
+  panel.add(list_legend(color[i], classification[i]));
+  }  
+
+Map.add(panel);  
